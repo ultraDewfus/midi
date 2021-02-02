@@ -68,7 +68,9 @@ export default class MIDIDevice {
 
   midiMessageEventHandler(input: WebMidi.MIDIInput) {
     input.addEventListener('midimessage', ({ data }) => {
-      console.log(data);
+      const midiData = document.querySelector('#midiData');
+      if(midiData)
+        midiData.textContent = 'MIDI Data: ' + data.toString();
     })
   }
 
