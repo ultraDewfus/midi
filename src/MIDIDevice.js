@@ -17,7 +17,10 @@ class MIDIDevice {
                         this.outputs.push(output);
                     }
                     access.addEventListener('statechange', ({ port }) => {
+                        const connectionStatus = document.querySelector('#connectionStatus');
                         if (port.state === 'connected') {
+                            if (connectionStatus)
+                                connectionStatus.textContent = "Connection Status: Connected";
                             if (port.type === 'input') {
                                 for (let input of access.inputs.values()) {
                                     if (!this.inputs.includes(input)) {
@@ -37,6 +40,8 @@ class MIDIDevice {
                             }
                         }
                         else {
+                            if (connectionStatus)
+                                connectionStatus.textContent = "Connection Status: Disconnected";
                             if (port.type === 'input') {
                                 let index = this.inputs.findIndex((input) => input && input.id === port.id);
                                 this.inputs.splice(index, 1);
