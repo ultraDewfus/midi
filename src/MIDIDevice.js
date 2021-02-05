@@ -62,8 +62,19 @@ class MIDIDevice {
     midiMessageEventHandler(input) {
         input.addEventListener('midimessage', ({ data }) => {
             const midiData = document.querySelector('#midiData');
-            if (midiData)
-                midiData.textContent = 'MIDI Data: ' + data.toString();
+            if (midiData) {
+                if (data[2] > 0) {
+                    const keyDown = document.createElement('li');
+                    keyDown.setAttribute('data-number', data[1].toString());
+                    keyDown.textContent = data.toString();
+                    midiData.appendChild(keyDown);
+                }
+                else {
+                    document.querySelectorAll(`li[data-number='${data[1].toString()}']`).forEach((node) => {
+                        midiData.removeChild(node);
+                    });
+                }
+            }
         });
     }
     initMIDIInput(input) {
