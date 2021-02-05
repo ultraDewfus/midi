@@ -1,4 +1,4 @@
-# MIDI Controller Interface
+# Project
 - A site that can connect to a USB MIDI device.
 - The goal is to expand this into a synthesizer to use with any MIDI device.
 
