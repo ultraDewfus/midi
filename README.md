@@ -12,9 +12,10 @@
 
 ## Instructions
 1. Clone the repository
-2. `npm install`
-3. `npm run build`
-4. `npm run start`
+2. `cd midi`
+3. `npm install`
+4. `npm run build`
+5. `npm run start`
 
 ## Sources
 - A Web MIDI API tutorial by Jake Albaugh. [gropramming: 001 - Web MIDI API](https://www.youtube.com/watch?v=556e3cLWusc) 
