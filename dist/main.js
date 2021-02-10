@@ -26,7 +26,7 @@ eval("\r\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\r\n
   \**********************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-eval("\r\nvar __importDefault = (this && this.__importDefault) || function (mod) {\r\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\r\n};\r\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\r\nconst MIDIDevice_1 = __importDefault(__webpack_require__(/*! ./MIDIDevice */ \"./src/MIDIDevice.js\"));\r\nfunction main() {\r\n    new MIDIDevice_1.default();\r\n    const audioCtx = new AudioContext();\r\n    console.log('AudioContext state: ' + audioCtx.state);\r\n}\r\nmain();\r\n\n\n//# sourceURL=webpack://project10/./src/index.js?");
+eval("\r\nvar __importDefault = (this && this.__importDefault) || function (mod) {\r\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\r\n};\r\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\r\nconst MIDIDevice_1 = __importDefault(__webpack_require__(/*! ./MIDIDevice */ \"./src/MIDIDevice.js\"));\r\nfunction main() {\r\n    new MIDIDevice_1.default();\r\n    const activateWebAudio = document.querySelector('#activateWebAudio');\r\n    if (activateWebAudio) {\r\n        activateWebAudio.addEventListener('click', () => {\r\n            const audioCtx = new AudioContext();\r\n            console.log('AudioContext state: ' + audioCtx.state);\r\n        });\r\n    }\r\n}\r\nmain();\r\n\n\n//# sourceURL=webpack://project10/./src/index.js?");
 
 /***/ })
 
