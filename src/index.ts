@@ -1,11 +1,12 @@
 import MIDIDevice from "./MIDIDevice";
 function main() {
-  new MIDIDevice(); 
+  let audioCtx: AudioContext;
   const activateWebAudio = document.querySelector('#activateWebAudio');
   if(activateWebAudio) {
     activateWebAudio.addEventListener('click', () => {
-      const audioCtx = new AudioContext();
+      audioCtx = new AudioContext();
       console.log('AudioContext state: ' + audioCtx.state);
+      new MIDIDevice(audioCtx); 
     });
   }
 }

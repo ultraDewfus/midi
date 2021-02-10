@@ -1,10 +1,14 @@
 export default class MIDIDevice {
   inputs: WebMidi.MIDIInput[];
   outputs: WebMidi.MIDIOutput[];
+  audioCtx: AudioContext;
+  oscillators: OscillatorNode[];
 
-  constructor() {
+  constructor(audioCtx: AudioContext) {
     this.inputs = [];
     this.outputs = [];
+    this.audioCtx = audioCtx;
+    this.oscillators = [];
     this.initMIDIDevice();
   }
 
@@ -75,10 +79,12 @@ export default class MIDIDevice {
           keyDown.setAttribute('data-number', data[1].toString());
           keyDown.textContent = this.midiToNoteName(data[1]) + ": " + this.midiToFrequency(data[1]);
           midiData.appendChild(keyDown);
+          this.initOscillator(data[1]);
         } else {
           document.querySelectorAll(`li[data-number='${data[1].toString()}']`).forEach((node) => {
             midiData.removeChild(node);
           })
+          this.terminateOscillator(data[1]);
         }
       }
     })
@@ -87,6 +93,19 @@ export default class MIDIDevice {
   initMIDIInput(input: WebMidi.MIDIInput) {
     this.midiMessageEventHandler(input);
     this.inputs.push(input);
+  }
+
+  initOscillator(midiValue: number) {
+    let osc = this.audioCtx.createOscillator();
+    osc.frequency.value = this.midiToFrequency(midiValue);
+    osc.connect(this.audioCtx.destination);
+    osc.start()
+    this.oscillators[midiValue] = osc;
+  }
+
+  terminateOscillator(midiValue: number) {
+    this.oscillators[midiValue].stop();
+    delete this.oscillators[midiValue];
   }
 
   midiToFrequency(midiValue: number) {
