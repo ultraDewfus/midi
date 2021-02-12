@@ -70,6 +70,11 @@ export default class MIDIDevice {
     });
   }
 
+  initMIDIInput(input: WebMidi.MIDIInput) {
+    this.midiMessageEventHandler(input);
+    this.inputs.push(input);
+  }
+
   midiMessageEventHandler(input: WebMidi.MIDIInput) {
     input.addEventListener('midimessage', ({ data }) => {
       const midiData = document.querySelector('#midiData');
@@ -90,22 +95,19 @@ export default class MIDIDevice {
     })
   }
 
-  initMIDIInput(input: WebMidi.MIDIInput) {
-    this.midiMessageEventHandler(input);
-    this.inputs.push(input);
-  }
-
   initOscillator(midiValue: number) {
     let osc = this.audioCtx.createOscillator();
+    let gain = this.audioCtx.createGain();
     osc.frequency.value = this.midiToFrequency(midiValue);
-    osc.connect(this.audioCtx.destination);
+    gain.gain.value = 0.0625;
+    osc.connect(gain);
+    gain.connect(this.audioCtx.destination);
     osc.start()
     this.oscillators[midiValue] = osc;
   }
 
   terminateOscillator(midiValue: number) {
     this.oscillators[midiValue].stop();
-    delete this.oscillators[midiValue];
   }
 
   midiToFrequency(midiValue: number) {
