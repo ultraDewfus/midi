@@ -1,14 +1,15 @@
+import Synth from './Synth';
 export default class MIDIDevice {
   inputs: WebMidi.MIDIInput[];
   outputs: WebMidi.MIDIOutput[];
   audioCtx: AudioContext;
-  oscillators: OscillatorNode[];
+  synths: Synth[];
 
   constructor(audioCtx: AudioContext) {
     this.inputs = [];
     this.outputs = [];
     this.audioCtx = audioCtx;
-    this.oscillators = [];
+    this.synths = [];
     this.initMIDIDevice();
   }
 
@@ -84,30 +85,16 @@ export default class MIDIDevice {
           keyDown.setAttribute('data-number', data[1].toString());
           keyDown.textContent = this.midiToNoteName(data[1]) + ": " + this.midiToFrequency(data[1]);
           midiData.appendChild(keyDown);
-          this.initOscillator(data[1]);
+          this.synths[data[1]] = new Synth(this.audioCtx)
+          this.synths[data[1]].initOscillator(data[1]);
         } else {
           document.querySelectorAll(`li[data-number='${data[1].toString()}']`).forEach((node) => {
             midiData.removeChild(node);
           })
-          this.terminateOscillator(data[1]);
+          this.synths[data[1]].terminatetOscillator();
         }
       }
     })
-  }
-
-  initOscillator(midiValue: number) {
-    let osc = this.audioCtx.createOscillator();
-    let gain = this.audioCtx.createGain();
-    osc.frequency.value = this.midiToFrequency(midiValue);
-    gain.gain.value = 0.0625;
-    osc.connect(gain);
-    gain.connect(this.audioCtx.destination);
-    osc.start()
-    this.oscillators[midiValue] = osc;
-  }
-
-  terminateOscillator(midiValue: number) {
-    this.oscillators[midiValue].stop();
   }
 
   midiToFrequency(midiValue: number) {
