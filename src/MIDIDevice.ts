@@ -92,6 +92,7 @@ export default class MIDIDevice {
             midiData.removeChild(node);
           })
           this.synths[data[1]].terminatetOscillator();
+          delete this.synths[data[1]];
         }
       }
     })
